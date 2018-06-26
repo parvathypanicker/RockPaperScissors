@@ -4,19 +4,44 @@
 <head>
     <meta charset="utf-8">
     <title>Rock Paper Scissors Game</title>
-    <!--  <link rel="stylesheet"
-        type="text/css"
-        href="reset.css" />
     <link href="style.css"
         rel="stylesheet"
-        type="text/css">-->
+        type="text/css">
 
 </head>
 
 <body>
+    <h1>
+        Rock, Paper, Scissors!
+    </h1>
+    <div id="container">
+        <h4>Please select one to start playing</h4>
+        <button id="rock"
+            value="rock">Rock</button>
+        <button id="paper"
+            value="paper">Paper</button>
+        <button id="scissors"
+            value="scissors">Scissors</button>
+        <div class="score">
+            <h2></h2>
+            <p class=label></p>
+            <p class=label></p>
+            <p class=label></p>
+
+        </div>
+
+    </div>
 
 
     <script>
+        const buttons = document.querySelectorAll('button');
+        var h2 = document.querySelector("h2")
+        var labels = document.querySelectorAll("p");
+        var results = labels[0];
+        var pscore = labels[1];
+        var cscore = labels[2];
+        buttons.forEach(button => button.addEventListener('click', playRound));
+
         let playerScore = 0;
         let computerScore = 0;
         var Moves = {
@@ -25,30 +50,11 @@
             'Scissors': 'scissors'
         };
 
-        // Function to play 5 round of Rock Paper Scissors Game
-        function game() {
-
-            for (i = 0; i < 5; i++) {
-
-                playRound();
-
-            }
-            if (playerScore > computerScore) {
-                console.log("You won the game!!!" + " Your score " + playerScore + " Computer score " + computerScore);
-            }
-            else if (playerScore < computerScore) {
-                console.log("You lost the game!!! Try again" + " Your score " + playerScore + " Computer score " + computerScore);
-            }
-            else {
-                console.log("Tied!!!" + " Your score " + playerScore + " Computer score " + computerScore);
-            }
-            playerScore = 0;
-            computerScore = 0;
-        }
         // Function that plays a single round of Rock Paper Scissors
         function playRound() {
-
-            var playerSelection = playerPlay();
+            h2.textContent = "SCORE"
+            //this.value = this.value.toLowerCase();
+            var playerSelection = this.value;
             var computerSelection = computerPlay();
 
             if ((playerSelection == Moves.Rock && computerSelection == Moves.Scissors) ||
@@ -56,49 +62,52 @@
                 (playerSelection == Moves.Paper && computerSelection == Moves.Rock)) {
 
                 playerWin(playerSelection, computerSelection);
+
             }
             else if (playerSelection == computerSelection) {
-                console.log("You tied this round!!!");
+                results.textContent = "You tied this round!!!";
             }
             else {
                 computerWin(playerSelection, computerSelection);
             }
+
+            pscore.textContent = "Player Score: " + playerScore;
+            cscore.textContent = "Computer Score: " + computerScore;
+
+            if (playerScore == 5 || computerScore == 5) {
+
+                results.textContent = "Please refresh the browser to play again";
+                document.getElementById("rock").disabled = true;
+                document.getElementById("paper").disabled = true;
+                document.getElementById("scissors").disabled = true;
+
+                if (playerScore == 5) {
+                    h2.textContent = "YOU WON!!!!"
+                }
+                else {
+                    h2.textContent = "YOU LOSE!!!!"
+                }
+            }
         }
+
+
         // To generate random words for computer selection
         function computerPlay() {
-            var words = ['rock', 'paper', 'scissors'];
+            var words = ['Rock', 'Paper', 'Scissors'];
             return words[Math.floor(Math.random() * words.length)];
-            return computerSelection;
-        }
-        // To get player selection
-        function playerPlay() {
-            var playerSelection = prompt("Please select a word from 'rock', 'paper' 'scissors'", "");
-            if (areInputsValid(playerSelection)) {
-                return playerSelection.toLowerCase();
-            }
-            else {
-                alert("That is not a valid move.Please play again");
-                return playerPlay();
-            }
-        }
-        //Function to validate player input
-        function areInputsValid(playerMove) {
-            playerMove = playerMove.toLowerCase();
-            if (playerMove === "rock" || playerMove === "paper" || playerMove === "scissors") {
-                return true;
-            }
+            return computerSelection.toLowerCase();
         }
         // Function to keep track of player score
 
         function playerWin(player, computer) {
             playerScore++;
-            console.log("You Won this round! " + player + " beats " + computer);
+            results.textContent = "You Won this round! " + player + " beats " + computer;
         }
         // Function to keep track of player score
 
         function computerWin(player, computer) {
             computerScore++;
-            console.log("Computer Won this round! " + computer + " beats " + player);
+            results.textContent = "Computer Won this round! " + computer + " beats " + player;
         }
 
     </script>
