@@ -27,6 +27,7 @@
 
         // Function to play 5 round of Rock Paper Scissors Game
         function game() {
+
             for (i = 0; i < 5; i++) {
 
                 playRound();
@@ -41,6 +42,8 @@
             else {
                 console.log("Tied!!!" + " Your score " + playerScore + " Computer score " + computerScore);
             }
+            playerScore = 0;
+            computerScore = 0;
         }
         // Function that plays a single round of Rock Paper Scissors
         function playRound() {
@@ -58,7 +61,6 @@
                 console.log("You tied this round!!!");
             }
             else {
-                console.log("You lost this round!!!");
                 computerWin(playerSelection, computerSelection);
             }
         }
@@ -71,9 +73,21 @@
         // To get player selection
         function playerPlay() {
             var playerSelection = prompt("Please select a word from 'rock', 'paper' 'scissors'", "");
-            return playerSelection.toLowerCase();
+            if (areInputsValid(playerSelection)) {
+                return playerSelection.toLowerCase();
+            }
+            else {
+                alert("That is not a valid move.Please play again");
+                return playerPlay();
+            }
         }
-
+        //Function to validate player input
+        function areInputsValid(playerMove) {
+            playerMove = playerMove.toLowerCase();
+            if (playerMove === "rock" || playerMove === "paper" || playerMove === "scissors") {
+                return true;
+            }
+        }
         // Function to keep track of player score
 
         function playerWin(player, computer) {
